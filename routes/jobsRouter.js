@@ -1,6 +1,6 @@
 const express = require('express')
 const router = express.Router()
-const jobCtrl = require('../cotrollers/jobsController')
+const jobCtrl = require('../controllers/jobsController')
 
 router.post('/', jobCtrl.create)
 router.get('/', jobCtrl.index)
