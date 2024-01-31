@@ -5,7 +5,7 @@ const jwt = require('jsonwebtoken')
 
 exports.auth = async (req, res, next) => {
     try {
-        const token = req.header('Authorization').replace('Bearer', '')
+        const token = req.header('Authorization').replace('Bearer ', '')
         const data = jwt.verify(token, 'secret')
         const applicant = await Applicant.findOne({ _id: data._id })
         
@@ -43,6 +43,15 @@ exports.login = async (req, res) => {
     }
 }
 
+exports.show = async (req, res) => {
+    try {
+        const foundApplicant = await Applicant.findOne({ _id: req.params.id })
+        res.status(200).json(foundApplicant)
+    } catch (error) {
+        res.status(400).send({ message: error.message })
+    }
+}
+
 exports.updateApplicant = async (req, res) => {
     try {
         const updates = Object.keys(req.body)
@@ -58,7 +67,7 @@ exports.updateApplicant = async (req, res) => {
 exports.deleteApplicant = async (req, res) => {
     try {
         await req.applicant.deleteOne()
-        res.status(200).json({ message: 'Applicant Deleted '})
+        res.status(200).json({ message: 'Applicant Deleted'})
     } catch (error) {
         res.status(400).json({ message: error.message })
     }
@@ -72,11 +81,11 @@ exports.apply = async (req, res) => {
         const foundJob = await Job.findOne({ _id: req.params.jobId })
         if(!foundJob) throw new Error(`Could not find job with ID: ${req.params.jobId}`)
 
-        applicant.appliedJobs.push(job._id)
-        job.applicants.push(applicant._id)
+        foundApplicant.appliedJobs.push(foundJob._id)
+        foundJob.applicants.push(foundApplicant._id)
         
-        await applicant.save()
-        await job.save()
+        await foundApplicant.save()
+        await foundJob.save()
 
         res.status(200).json({
             message: `Succesfully applied to job with ID: ${req.params.jobId}`,
