@@ -1,9 +1,19 @@
 const Job = require('../models/job')
+const Recruiter = require('../models/recruiter')
+
 
 exports.create = async (req, res) => {
     try {
-        const createdJob = await Job.create(req.body)
-        res.status(201).json(createdJob)
+        const newJob = await Job.create(req.body)
+        
+        req.recruiter.createdJobs.push(newJob._id)
+        req.recruiter.save()
+
+        res.status(201).json({
+            message: `${req.recruiter.name} created the job ${newJob.title}`,
+            newJob,
+            recruiter: req.recruiter
+        })
     } catch (error) {
         res.status(400).send({ message: error.message })
     }
