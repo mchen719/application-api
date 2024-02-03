@@ -7,14 +7,15 @@ This API, runs on localhost, and was created to simulate applicants apply for a 
 3. Clone the repo in the local directory: `git clone git@github.com:mchen719/application-api.git`
 4. cd into the cloned directory 
 5. Open the code in vs code using code .
-6. In the terminal, install all the necessary packages: `npm i express mongoose dotenv bcrypt jsonwebtoken` and install the dev scripts: `npm i -D mongodb-memory-server, jest supertest`. 
+6. In the terminal, install all the necessary packages: `npm i express mongoose dotenv bcrypt jsonwebtoken` and install the dev scripts: `npm i -D mongodb-memory-server jest supertest`. 
 7. Create a .env file and input your MONGO_URI and SECRET
 
 ## Running the Tests 
 1. Check to make sure jest and supertest is installed, if not, reference step 6 in the installation guide.
-2. In the package.json, change edit the scripts section as well as set jest's testing environment (Reference below)
+2. In the package.json, edit the "scripts" to add "jest" as well as set jest's testing environment to "node".(Reference below)
 ```
-"test": "jest",
+"scripts": {
+    "test": "jest",
     "start": "node server.js",
     "dev": "nodemon",
     "load": "artillery run artillery.yml"
@@ -23,10 +24,10 @@ This API, runs on localhost, and was created to simulate applicants apply for a 
     "testEnvironment": "node"
   },
 ```
-3. Run the test by typing `npm run test` in the terminal.
+3. Run the tests by typing `npm run test` in the terminal.
 
 ## Tests
-There are 3 test files for each of the 3 models, controllers and routers. 
+There are 3 test files one for each of the 3 models and respective controllers and routers.  
 
 ### 1. Applicant Test (applicant.test.js)
 This file tests 6 routes for the applicants. 
